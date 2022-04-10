@@ -1,0 +1,1 @@
+MOVE C:\Users\WIN10\Downloads\9-z.txt C:\Users\WIN10\Desktop\app\infs

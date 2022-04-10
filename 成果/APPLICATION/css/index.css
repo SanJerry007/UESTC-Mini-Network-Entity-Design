@@ -1,0 +1,110 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  height: 100vh;
+  padding: 5vh 0;
+  background: pink url(../images/天气之子天空照片4k壁纸3840x2160_彼岸图网.jpg)
+    no-repeat;
+  background-size: 100vw 100vh;
+}
+ul {
+  list-style: none;
+}
+ul li {
+  display: block;
+  width: 50%;
+  min-height: 50px;
+  padding: 10px 5px;
+  margin: 10px 50px;
+  border-radius: 10px;
+  background-color: #ccc;
+  /* text-indent: 1em; */
+  white-space: normal;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+ul li span {
+  position: relative;
+}
+
+.right {
+  margin-left: 45%;
+  right: 50px;
+}
+.right span::before {
+  background: url(../images/Cache_-2bce971020b6ed43..jpg);
+  background-size: contain;
+}
+
+ul li span::before {
+  display: block;
+  position: absolute;
+  background: url(../images/QQ图片20201214232126.gif);
+  background-size: contain;
+  left: -50px;
+  top: 0px;
+  border-radius: 50%;
+  content: "";
+  width: 40px;
+  height: 40px;
+  background-color: pink;
+}
+.header {
+  /* background-color: rgb(4, 181, 207); */
+  background: linear-gradient(90deg, #62d8eb, #10a1b8);
+  text-align: center;
+  line-height: 50px;
+  color: #fff;
+  font-size: 20px;
+  height: 50px;
+}
+.container {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  box-shadow: -1px -1px 10px #101010;
+  width: 80%;
+  height: 100%;
+  margin: 0 auto;
+  background-color: rgb(255, 255, 255);
+}
+.display {
+  flex: 3;
+  border-bottom: 1px solid #aaa;
+  overflow: scroll;
+  overflow-x: hidden;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+form {
+  position: relative;
+  flex: 1;
+  background-color: #fff;
+}
+input[type="file"] {
+  position: absolute;
+  left: 3px;
+  top: 2px;
+  width: 70px;
+  background-color: #fff;
+}
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  resize: none;
+  background: #fff;
+}
+button {
+  position: absolute;
+  background-color: #23cee9;
+  border: none;
+  padding: 5px 10px;
+  right: 10px;
+  bottom: 10px;
+}

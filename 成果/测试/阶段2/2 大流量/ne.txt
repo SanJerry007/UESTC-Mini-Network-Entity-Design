@@ -1,0 +1,140 @@
+#1、通用端口号定义:xxxxx, 1[1位设备号][1位层次号][2位实体号]
+#2、层名称必须大于等于三个字母，且不相同，最低一层必须是PHY
+#3、设备编号从1开始，各层实体编号从0开始，这些编号是为了在本文件中定位参数，与设计里的通信的地址无关，但可作参考
+#4、除phy层外，其余各层参数可由设计者自己增减参数及修改参数名字、参数值等。但是整体结构需要保持，包括开头三行和以“-------”的间隔
+#5、例程的应用层使用的workMode参数，目前有两位数，十位数设定发送的方法，0表示等待键盘输入，1表示自动定时发送；个位数设定打印方式，0表示仅打印统计信息，1表示打印数据内容
+#6、例程的应用层使用的autoSendTime是定义自动发送测试数据的时间间隔，单位是ms
+#7、例程的应用层使用的autoSendSize是自动发送的数据长度，单位是bit
+#8、层间接口数据格式用lowerMode和upperMode参数表示，同一个设备下层对上的upperMode与上层对下的lowerMode之间要相同。默认值为0——比特数组流。尤其要注意物理层的uppMode参数。
+#9、全网可设定一个统一的观测点，CmdIpAddr和CmdPort，用来接收带外命令的，比如统一关机，发送特定数据等，也可用来收集各网元各层状态信息，做集中展示，
+#10、本例为仿真两个相连的网元，每个网元具有四层结构
+#    网元1                        网元2
+#  APP层实体0  11400           APP层实体0 12400
+#      |                                          |
+#  NET层实体0  11300           NET层实体0 12300
+#      |                                           |
+#  LNK层实体0  11200           LNK层实体0 12200
+#      |                                           |    
+#  PHY层实体0  11100           PHY层实体0 12100
+#      |                                           |       
+#      —————————————
+---------------------------------------------------------
+#每个网元的层次结构描述
+#不支持一个低层实体同时关联多个高层实体。
+#支持一个高层实体同时关联/管理多个低层实体，如交换机的链路层会同时管理多个端口，路由器的网络层会同时管理多个链路接口
+#格式：[设备号] [从最低层到高层各层名字][实体号][@ip地址]，ip地址可以不填，默认是127.0.0.1
+#一层有多个实体，分成多行描述，如物理层有三个实体：PHY0 PHY1 PHY2，分成多行，每层一个，见下面带#的例子
+#例子中设备1的LNK0管理了PHY0和1，LNK1管理了PHY3和4，它们统一被NET0管理
+#设备号从1开始，实体号从0开始，按序排列
+#只有第一个行带设备号，其余行开头必须有空格，每个实体之间必须用空格间隔，空格数量不限，行尾结束不要有空格
+#1 PHY0 LNK0@127.0.0.1  NET0 APP0
+#   PHY1
+#   PHY2 LNK1
+#   PHY3
+1 PHY0  LNK0 NET0 APP0
+2 PHY0  LNK0 NET0 APP0
+---------------------------------------------------------
+#全网拓扑连接描述区域，请注意参数中的标点符号都是英文格式
+#	点到点连接，格式 : A设备号,物理层接口号--B设备号,物理层接口号
+#	共享信道连接，共享同一信道的设备用--符号连续写成一行，格式 :A 设备号,物理层接口号--B设备号,物理层接口号--C设备号,物理层接口号
+#先写哪个设备都行
+#每一行一条链接，中间不留空格
+1,0--2,0
+---------------------------------------------------------
+#统一控制平台的工作位置，等号不留空格
+cmdIpAddr=127.0.0.1
+cmdPort=20000
+phySlotTime = 1
+trafficPlotRate = 100
+errorProb = 50
+bufferSize = 80000
+heartBeatingTime = 50
+---------------------------------------------------------
+#其它参数区域，存放实验者自行定义的各种参数，如果用例程中的cfgFileParms类，通过getValueInt和getValueStr，提供参数名，就能得到参数值
+#除了开头三行必须保持顺序：deviceID，layer,entity,其他参数行的位置可以交换，没有写出来的物理层实体参数，程序会使用默认参数
+deviceID = 1
+	layer = PHY
+		entityID = 0
+			errorProb = 50
+			bufferSize = 80000
+			upperMode = 0
+		-----------------------------
+	layer = LNK
+		entityID = 0
+			myAddr = 10
+			lowerMode = 0
+			Top = 0
+			Print_mode = 0
+			F_Print_mode = 0
+			T_Print_mode = 0
+			Recv_timeout = 30
+			R_Send_timeout = 300
+			Upper_Send_timeout = 30
+			Lower_Send_timeout = 30
+			Send_window_size = 10
+			Divide_len = 100
+		------------------------------
+	layer = NET
+		entityID = 0
+			myAddr = 10
+			Print_mode = 0
+			T_Print_mode = 0
+			Recv_timeout = 30
+			Upper_Send_timeout = 30
+			Lower_Send_timeout = 30
+		------------------------------
+	layer = APP
+		entityID = 0
+			workMode = 0
+			myAddr = 1
+			Print_mode = 0
+			T_Print_mode = 0
+			Recv_timeout = 5
+			Lower_Send_timeout = 5
+			Auto_send_time = 5
+			Auto_send_mode = 1
+			Auto_send_len = 12
+----------------------------------------------------------
+deviceID = 2
+	layer = PHY
+		entityID = 0
+			errorProb = 50
+			bufferSize = 80000
+			upperMode = 0
+		-----------------------------
+	layer = LNK
+		entityID = 0
+			myAddr = 20
+			lowerMode = 0
+			Top = 0
+			Print_mode = 0
+			F_Print_mode = 0
+			T_Print_mode = 0
+			Recv_timeout = 30
+			R_Send_timeout = 300
+			Upper_Send_timeout = 30
+			Lower_Send_timeout = 30
+			Send_window_size = 10
+			Divide_len = 100
+		------------------------------
+	layer = NET
+		entityID = 0
+			myAddr = 10
+			Print_mode = 0
+			T_Print_mode = 0
+			Recv_timeout = 30
+			Upper_Send_timeout = 30
+			Lower_Send_timeout = 30
+		------------------------------
+	layer = APP
+		entityID = 0
+			workMode = 0
+			myAddr = 20
+			Print_mode = 0
+			T_Print_mode = 0
+			Recv_timeout = 5
+			Lower_Send_timeout =5
+			Auto_send_time = 5
+			Auto_send_mode = 1
+			Auto_send_len = 12
+----------------------------------------------------------
