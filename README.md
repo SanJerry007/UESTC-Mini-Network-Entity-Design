@@ -1,6 +1,6 @@
 ## 项目环境
 
-操作系统 Windows 10，IDE 使用 Dev-c++。
+操作系统 Windows 10，IDE 使用 Dev-C++。
 
 ## 项目描述
 
